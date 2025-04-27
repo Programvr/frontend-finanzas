@@ -1,13 +1,9 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: 'http://localhost:8080/api', 
 });
 
-// Interceptor para añadir token si está disponible
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
