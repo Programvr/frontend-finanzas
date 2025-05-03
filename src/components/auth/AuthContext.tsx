@@ -1,10 +1,11 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../services/authService';
+import { login, register as registerUser } from '../../services/authService';
 
 interface AuthContextType {
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -16,14 +17,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   const handleLogin = async (email: string, password: string) => {
-    try {
-      const { token } = await login(email, password);
-      localStorage.setItem('token', token);
-      setToken(token);
-      navigate('/dashboard');
-    } catch (error) {
-      throw error;
-    }
+    const { token } = await login(email, password);
+    localStorage.setItem('token', token);
+    setToken(token);
+    navigate('/dashboard');
+  };
+
+  const handleRegister = async (name: string, email: string, password: string) => {
+    await registerUser(name, email, password);
+    navigate('/login');
   };
 
   const handleLogout = () => {
@@ -35,6 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value = {
     token,
     login: handleLogin,
+    register: handleRegister,
     logout: handleLogout,
     isAuthenticated: !!token,
   };
