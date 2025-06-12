@@ -1,7 +1,10 @@
-import api from './api';
+import api from '../api';
 
 interface LoginResponse {
   token: string;
+  nombre: string;
+  email: string;
+  idUsuario: number;
 }
 
 export const login = async (email: string, password: string): Promise<LoginResponse> => {

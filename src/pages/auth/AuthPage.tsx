@@ -1,4 +1,4 @@
-import { LoginForm } from '../components/auth/LoginForm';
+import { LoginForm } from '../../components/auth/LoginForm';
 import { Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
