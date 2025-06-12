@@ -4,13 +4,29 @@ declare module '@mui/material/styles' {
   interface Theme {
     customStyles: {
       authPageContainer: React.CSSProperties;
+      registerPageContainer: React.CSSProperties;
+      profilePageContainer: React.CSSProperties;
+      passwordPageContainer: React.CSSProperties;
+      administrationPageContainer: React.CSSProperties;
       loginFormContainer: React.CSSProperties;
+      registerFormContainer: React.CSSProperties;
+      profileFormContainer: React.CSSProperties;
+      passwordFormContainer: React.CSSProperties;
+      administrationFormContainer: React.CSSProperties;
     };
   }
   interface ThemeOptions {
     customStyles?: {
       authPageContainer?: React.CSSProperties;
+      registerPageContainer?: React.CSSProperties;
+      profilePageContainer?: React.CSSProperties;
+      passwordPageContainer?: React.CSSProperties;
+      administrationPageContainer?: React.CSSProperties;
       loginFormContainer?: React.CSSProperties;
+      registerFormContainer?: React.CSSProperties;
+      profileFormContainer?: React.CSSProperties;
+      passwordFormContainer?: React.CSSProperties;
+      administrationFormContainer?: React.CSSProperties;
     };
   }
 }
@@ -56,6 +72,25 @@ export const theme = createTheme({
       backgroundPosition: 'center',
     },
     loginFormContainer: {
+      width: '100%',
+      maxWidth: '400px',
+      padding: '20px',
+      backgroundColor: '#b2b2b2', // Fondo oscuro para el formulario
+      borderRadius: '8px',
+      boxShadow: '0 4px 20px rgba(92, 8, 8, 0.7)', // Sombra más pronunciada
+      color: '#ffffff', // Texto blanco dentro del formulario
+      border: '1px solidrgb(156, 97, 7)', // Borde naranja para resaltar
+    },
+    registerPageContainer: {
+      minHeight: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundImage: 'url("https://th.bing.com/th/id/R.b14e871c4508d395bc24b59b34da178e?rik=q7B5630dXd4ATg&pid=ImgRaw&r=0")', // Ruta directa a la imagen en línea
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+    registerFormContainer: {
       width: '100%',
       maxWidth: '400px',
       padding: '20px',

@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useRegister } from './RegisterContext';
+import { useProfile } from './ProfileContext';
+import { useAuth } from '../auth/AuthContext';
 import { 
   Box, 
   TextField, 
@@ -18,7 +19,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 // Esquema de validación mejorado (Punto 9)
-const registerSchema = z.object({
+const profileSchema = z.object({
   nombre: z.string()
     .min(1, 'El nombre es requerido')
     .max(50, 'El nombre no puede exceder los 50 caracteres')
@@ -28,51 +29,42 @@ const registerSchema = z.object({
     .min(1, 'El email es requerido')
     .max(100, 'El email no puede exceder los 100 caracteres')
     .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'El formato del email no es válido'),
-  password: z.string()
-    .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .max(50, 'La contraseña no puede exceder los 50 caracteres')
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      'Debe contener al menos una mayúscula, una minúscula, un número y un carácter especial'
-    ),
 });
 
-type RegisterFormData = z.infer<typeof registerSchema>;
+type ProfileFormData = z.infer<typeof profileSchema>;
 
-export const RegisterForm = () => {
-  const { register: registerUser, message,  clearMessage } = useRegister();
+export const ProfileForm = () => {
+  const { profile, message,  clearMessage } = useProfile();
+  const { token, nombre, email, idUsuario, logout } = useAuth(); 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty, isValid },
-  } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
+  } = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
     mode: 'onChange', 
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
+  const onSubmit = async (data: ProfileFormData) => {
     setIsLoading(true);
     setError(null);
     try {
-      await registerUser(data.nombre, data.email, data.password);
+      await profile(Number(idUsuario), data.nombre, data.email);
     } catch (err) {
       setError(
         err instanceof Error 
           ? err.message 
-          : 'Ocurrió un error al registrarse. Por favor intente nuevamente.'
+          : 'Ocurrió un error al actualizar los datos. Por favor intente nuevamente.'
       );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  
 
   return (
     <Box
@@ -97,10 +89,10 @@ export const RegisterForm = () => {
         textAlign="center"
         sx={{ fontWeight: 'bold' }}
       >
-        Registrarse
+        Actualizar Perfil
       </Typography>
       
-      {/* Muestra el mensaje del API */}
+      {}
       {message && (
         <Alert 
           severity="success"
@@ -119,6 +111,7 @@ export const RegisterForm = () => {
           {error}
         </Alert>
       )}
+      
       <TextField
         label="Nombre"
         type="text"
@@ -147,34 +140,10 @@ export const RegisterForm = () => {
         InputProps={{
           autoComplete: 'username',
         }}
-        sx={{ mb: 2 }}
-      />
-
-      <TextField
-        label="Contraseña"
-        type={showPassword ? 'text' : 'password'}
-        fullWidth
-        margin="normal"
-        variant="outlined"
-        {...register('password')}
-        error={!!errors.password}
-        helperText={errors.password?.message}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={toggleShowPassword}
-                edge="end"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
-          autoComplete: 'current-password',
-        }}
         sx={{ mb: 3 }}
       />
+
+      
 
       <Button
         type="submit"
@@ -190,21 +159,9 @@ export const RegisterForm = () => {
         disabled={isLoading || !isDirty || !isValid}
         startIcon={isLoading ? <CircularProgress size={20} /> : null}
       >
-        {isLoading ? 'Registrandose...' : 'Registrarse'}
+        {isLoading ? 'Actualizando datos...' : 'Actualizar Datos'}
       </Button>
 
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Link 
-          component={RouterLink} 
-          to="/login" 
-          variant="body2"
-          sx={{ textDecoration: 'none' }}
-        >
-          ¿Ya tienes cuenta? Inicia sesión
-        </Link>
-        
-        
-      </Box>
     </Box>
   );
 };
