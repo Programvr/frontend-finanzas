@@ -3,7 +3,9 @@ import { AppBar, Toolbar, Box, Avatar, IconButton, Menu, MenuItem, Typography, B
 import { useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import DashboardIcon from '@mui/icons-material/Dashboard'; // Importa el ícono de Dashboard
-import { AdminPanelSettings } from '@mui/icons-material';
+
+import { AdminPanelSettings, PaidOutlined } from '@mui/icons-material';
+
 
 export const AuthenticatedLayout = () => {
   const { token, nombre, email, idUsuario, logout } = useAuth(); 
@@ -57,6 +59,22 @@ export const AuthenticatedLayout = () => {
               Dashboard
             </Button>
             <Button
+
+              startIcon={<PaidOutlined />}
+              onClick={() => navigate('/transacciones')}
+              sx={{
+                color: 'black',
+                textTransform: 'none',
+                fontWeight: 'normal',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                }
+              }}
+            >
+              Transacciones
+            </Button>
+            <Button
+
               startIcon={<AdminPanelSettings />}
               onClick={() => navigate('/administration')}
               sx={{
