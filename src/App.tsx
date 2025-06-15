@@ -12,8 +12,10 @@ import { AuthenticatedLayout } from './components/layout/AuthenticatedLayout';
 import { ProfilePage } from './pages/auth/ProfilePage';
 import { PasswordPage } from './pages/auth/PasswordPage';
 import { AdministrationPage } from './pages/auth/AdministrationPage';
+
 import { TransaccionProvider } from './components/transaccion/TransaccionContext';
 import { TransaccionPage } from './pages/transaccion/TransaccionPage';
+
 
 function App() {
   return (
@@ -51,10 +53,12 @@ function App() {
               <AdministrationProvider>{}
                 <AdministrationPage />
               </AdministrationProvider>} />
+
             <Route path="/transacciones" element={
               <TransaccionProvider>{}
                 <TransaccionPage />
               </TransaccionProvider>} />
+            
             </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
