@@ -15,6 +15,8 @@ import { AdministrationPage } from './pages/auth/AdministrationPage';
 
 import { TransaccionProvider } from './components/transaccion/TransaccionContext';
 import { TransaccionPage } from './pages/transaccion/TransaccionPage';
+import { InformePage } from './pages/informe/InformePage';
+import { InformeProvider } from './components/informe/InformeContext';
 
 
 function App() {
@@ -58,6 +60,11 @@ function App() {
               <TransaccionProvider>{}
                 <TransaccionPage />
               </TransaccionProvider>} />
+
+            <Route path="/informes" element={
+              <InformeProvider>{}
+                <InformePage />
+              </InformeProvider>} />
             
             </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />

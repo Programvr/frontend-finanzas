@@ -5,6 +5,7 @@ import { useAuth } from '../auth/AuthContext';
 import DashboardIcon from '@mui/icons-material/Dashboard'; // Importa el ícono de Dashboard
 
 import { AdminPanelSettings, PaidOutlined } from '@mui/icons-material';
+import { DateRangeIcon } from '@mui/x-date-pickers';
 
 
 export const AuthenticatedLayout = () => {
@@ -57,6 +58,20 @@ export const AuthenticatedLayout = () => {
               }}
             >
               Dashboard
+            </Button>
+            <Button
+              startIcon={< DateRangeIcon />}
+              onClick={() => navigate('/informes')}
+              sx={{
+                color: 'black',
+                textTransform: 'none',
+                fontWeight: 'normal',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                }
+              }}
+            >
+              Informes
             </Button>
             <Button
 

@@ -9,12 +9,14 @@ declare module '@mui/material/styles' {
       passwordPageContainer: React.CSSProperties;
       administrationPageContainer: React.CSSProperties;
       transaccionPageContainer: React.CSSProperties;
+      informePageContainer: React.CSSProperties;
       loginFormContainer: React.CSSProperties;
       registerFormContainer: React.CSSProperties;
       profileFormContainer: React.CSSProperties;
       passwordFormContainer: React.CSSProperties;
       administrationFormContainer: React.CSSProperties;
       transaccionFormContainer: React.CSSProperties;
+      informeFormContainer: React.CSSProperties;
     };
   }
   interface ThemeOptions {
@@ -25,12 +27,14 @@ declare module '@mui/material/styles' {
       passwordPageContainer?: React.CSSProperties;
       administrationPageContainer?: React.CSSProperties;
       transaccionPageContainer?: React.CSSProperties;
+      informePageContainer?: React.CSSProperties;
       loginFormContainer?: React.CSSProperties;
       registerFormContainer?: React.CSSProperties;
       profileFormContainer?: React.CSSProperties;
       passwordFormContainer?: React.CSSProperties;
       administrationFormContainer?: React.CSSProperties;
       transaccionFormContainer?: React.CSSProperties;
+      informeFormContainer?: React.CSSProperties;
     };
   }
 }
