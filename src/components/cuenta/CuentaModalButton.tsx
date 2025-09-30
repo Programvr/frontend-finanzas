@@ -21,35 +21,34 @@ import {
   CircularProgress
 } from '@mui/material';
 import { Add, Close, Edit, Delete } from '@mui/icons-material';
-import { TransaccionForm } from './TransaccionForm';
-import { useTransacciones } from './TransaccionContext';
-import { Transaccion } from '../../services/transaccion/transaccionService';
+import { CuentaForm } from './CuentaForm';
+import { useCuentas } from './CuentaContext';
+import { Cuenta } from '../../services/cuenta/cuentaService';
 
-export const TransaccionModalButton = () => {
+export const CuentaModalButton = () => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const {
-    transacciones,
+    cuentas,
     loading,
     error,
-    fetchTransacciones,
-    deleteTransaccion,
-    categorias,
+    fetchCuentas,
+    deleteCuenta,
     clearError,
     clearMessage
-  } = useTransacciones();
+  } = useCuentas();
 
-  const [currentTransaccion, setCurrentTransaccion] = useState<Transaccion | null>(null);
+  const [currentCuenta, setCurrentCuenta] = useState<Cuenta | null>(null);
 
   useEffect(() => {
-    fetchTransacciones();
-  }, [fetchTransacciones]);
+    fetchCuentas();
+  }, [fetchCuentas]);
 
   const handleOpen = () => {
     clearError();
     clearMessage();
-    setCurrentTransaccion(null);
+    setCurrentCuenta(null);
     setOpen(true);
   };
 
@@ -61,15 +60,15 @@ export const TransaccionModalButton = () => {
     }
   };
 
-  const handleEdit = (transaccion: Transaccion) => {
-    setCurrentTransaccion(transaccion);
+  const handleEdit = (cuenta: Cuenta) => {
+    setCurrentCuenta(cuenta);
     setOpen(true);
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('¿Estás seguro de eliminar esta transacción?')) {
-      await deleteTransaccion(id);
-      fetchTransacciones();
+    if (window.confirm('¿Estás seguro de eliminar esta cuenta?')) {
+      await deleteCuenta(id);
+      fetchCuentas();
     }
   };
 
@@ -77,28 +76,13 @@ export const TransaccionModalButton = () => {
     clearError();
     clearMessage();
     setOpen(false);
-    fetchTransacciones();
+    fetchCuentas();
   };
 
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const getCategoryName = (categoryId: number) => {
-    const category = categorias.find(c => c.id === categoryId);
-    return category ? category.nombre : 'Desconocida';
-  };
 
   return (
     <Box sx={{ marginTop: 4 }}>
-      {/* Botón de agregar nueva transacción */}
+      {/* Botón de agregar nueva cuenta */}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button
           variant="contained"
@@ -118,12 +102,12 @@ export const TransaccionModalButton = () => {
             minWidth: '200px'
           }}
         >
-          <Typography variant="button">Nueva Transacción</Typography>
+          <Typography variant="button">Nueva Cuenta</Typography>
         </Button>
       </Box>
 
-      {/* Tabla de transacciones */}
-      {loading && !transacciones.length ? (
+      {/* Tabla de cuentas */}
+      {loading && !cuentas.length ? (
         <Box display="flex" justifyContent="center" mt={4}>
           <CircularProgress />
         </Box>
@@ -136,40 +120,35 @@ export const TransaccionModalButton = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Fecha y Hora</TableCell>
-                <TableCell>Descripción</TableCell>
-                <TableCell>Categoría</TableCell>
-                <TableCell>Monto</TableCell>
+                <TableCell>Nombre</TableCell>
                 <TableCell>Tipo</TableCell>
-                <TableCell>Nota</TableCell>
-                <TableCell>Recurrente</TableCell>
-                <TableCell>Acciones</TableCell>
+                <TableCell>Saldo Inicial</TableCell>
+                <TableCell>Saldo Actual</TableCell>
+                <TableCell>Moneda</TableCell>
+                <TableCell>Activa</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {transacciones.map((transaccion) => (
-                <TableRow key={transaccion.id}>
-                  <TableCell>{formatDateTime(transaccion.fecha)}</TableCell>
-                  <TableCell>{transaccion.descripcion}</TableCell>
-                  <TableCell>{transaccion.categoria}</TableCell>
-                  <TableCell sx={{ color: transaccion.tipo === 'I' ? 'green' : 'red' }}>
-                    {transaccion.tipo === 'I' ? '+' : '-'}${transaccion.monto.toFixed(2)}
-                  </TableCell>
-                  <TableCell>{transaccion.tipo === 'I' ? 'Ingreso' : 'Gasto'}</TableCell>
-                  <TableCell>{transaccion.nota || '-'}</TableCell>
-                  <TableCell>{transaccion.recurrente ? '✔️' : '❌'}</TableCell>
+              {cuentas.map((cuenta) => (
+                <TableRow key={cuenta.id}>
+                  <TableCell>{cuenta.nombre}</TableCell>
+                  <TableCell>{cuenta.tipo}</TableCell>
+                  <TableCell sx={{ color: 'green'}}>${cuenta.saldoInicial.toFixed(2)}</TableCell>
+                  <TableCell sx={{ color: 'green'}}>${cuenta.saldoActual.toFixed(2)}</TableCell>
+                  <TableCell>{cuenta.moneda}</TableCell>
+                  <TableCell>{cuenta.activa ? '✔️' : '❌'}</TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={1}>
                       <IconButton 
                         color="primary" 
-                        onClick={() => handleEdit(transaccion)}
+                        onClick={() => handleEdit(cuenta)}
                         size="small"
                       >
                         <Edit fontSize="small" />
                       </IconButton>
                       <IconButton 
                         color="error" 
-                        onClick={() => transaccion.id && handleDelete(transaccion.id)}
+                        onClick={() => cuenta.id && handleDelete(cuenta.id)}
                         size="small"
                       >
                         <Delete fontSize="small" />
@@ -183,7 +162,7 @@ export const TransaccionModalButton = () => {
         </TableContainer>
       )}
 
-      {/* Modal para agregar/editar transacciones */}
+      {/* Modal para agregar/editar cuentas */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -205,7 +184,7 @@ export const TransaccionModalButton = () => {
             paddingRight={fullScreen ? 0 : 2}
           >
             <Typography variant="h6" fontWeight="bold">
-              {currentTransaccion ? 'Editar Transacción' : 'Nueva Transacción'}
+              {currentCuenta ? 'Editar Cuenta' : 'Nueva Cuenta'}
             </Typography>
             <IconButton 
               edge="end" 
@@ -236,8 +215,8 @@ export const TransaccionModalButton = () => {
             overflowY: 'auto',
             paddingRight: '4px'
           }}>
-            <TransaccionForm 
-              initialData={currentTransaccion || undefined}
+            <CuentaForm 
+              initialData={currentCuenta || undefined}
               onSuccess={handleSuccess}
               onCancel={handleClose}
               isModal={true}

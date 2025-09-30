@@ -9,14 +9,22 @@ declare module '@mui/material/styles' {
       passwordPageContainer: React.CSSProperties;
       administrationPageContainer: React.CSSProperties;
       transaccionPageContainer: React.CSSProperties;
+      transferenciaPageContainer: React.CSSProperties;
+      objetivoAhorroPageContainer: React.CSSProperties;
+      cuentaPageContainer: React.CSSProperties;
       informePageContainer: React.CSSProperties;
+      presupuestoPageContainer: React.CSSProperties;
       loginFormContainer: React.CSSProperties;
       registerFormContainer: React.CSSProperties;
       profileFormContainer: React.CSSProperties;
       passwordFormContainer: React.CSSProperties;
       administrationFormContainer: React.CSSProperties;
       transaccionFormContainer: React.CSSProperties;
+      transferenciaFormContainer: React.CSSProperties;
+      objetivoAhorroFormContainer: React.CSSProperties;
+      cuentaFormContainer: React.CSSProperties;
       informeFormContainer: React.CSSProperties;
+      presupuestoFormContainer: React.CSSProperties;
     };
   }
   interface ThemeOptions {
@@ -27,14 +35,22 @@ declare module '@mui/material/styles' {
       passwordPageContainer?: React.CSSProperties;
       administrationPageContainer?: React.CSSProperties;
       transaccionPageContainer?: React.CSSProperties;
+      transferenciaPageContainer?: React.CSSProperties;
+      objetivoAhorroPageContainer?: React.CSSProperties;
+      cuentaPageContainer?: React.CSSProperties;
       informePageContainer?: React.CSSProperties;
+      presupuestoPageContainer?: React.CSSProperties;
       loginFormContainer?: React.CSSProperties;
       registerFormContainer?: React.CSSProperties;
       profileFormContainer?: React.CSSProperties;
       passwordFormContainer?: React.CSSProperties;
       administrationFormContainer?: React.CSSProperties;
       transaccionFormContainer?: React.CSSProperties;
+      transferenciaFormContainer?: React.CSSProperties;
+      objetivoAhorroFormContainer?: React.CSSProperties;
+      cuentaFormContainer?: React.CSSProperties;
       informeFormContainer?: React.CSSProperties;
+      presupuestoFormContainer?: React.CSSProperties;
     };
   }
 }

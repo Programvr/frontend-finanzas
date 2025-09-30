@@ -21,35 +21,35 @@ import {
   CircularProgress
 } from '@mui/material';
 import { Add, Close, Edit, Delete } from '@mui/icons-material';
-import { TransaccionForm } from './TransaccionForm';
-import { useTransacciones } from './TransaccionContext';
-import { Transaccion } from '../../services/transaccion/transaccionService';
+import { TransferenciaForm } from './TransferenciaForm';
+import { useTransferencias } from './TransferenciaContext';
+import { Transferencia } from '../../services/transferencia/transferenciaService';
 
-export const TransaccionModalButton = () => {
+export const TransferenciaModalButton = () => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const {
-    transacciones,
+    transferencias,
     loading,
     error,
-    fetchTransacciones,
-    deleteTransaccion,
-    categorias,
+    fetchTransferencias,
+    deleteTransferencia,
+    cuentas,
     clearError,
     clearMessage
-  } = useTransacciones();
+  } = useTransferencias();
 
-  const [currentTransaccion, setCurrentTransaccion] = useState<Transaccion | null>(null);
+  const [currentTransferencia, setCurrentTransferencia] = useState<Transferencia | null>(null);
 
   useEffect(() => {
-    fetchTransacciones();
-  }, [fetchTransacciones]);
+    fetchTransferencias();
+  }, [fetchTransferencias]);
 
   const handleOpen = () => {
     clearError();
     clearMessage();
-    setCurrentTransaccion(null);
+    setCurrentTransferencia(null);
     setOpen(true);
   };
 
@@ -61,15 +61,15 @@ export const TransaccionModalButton = () => {
     }
   };
 
-  const handleEdit = (transaccion: Transaccion) => {
-    setCurrentTransaccion(transaccion);
+  const handleEdit = (transferencia: Transferencia) => {
+    setCurrentTransferencia(transferencia);
     setOpen(true);
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('¿Estás seguro de eliminar esta transacción?')) {
-      await deleteTransaccion(id);
-      fetchTransacciones();
+    if (window.confirm('¿Estás seguro de eliminar esta transferencia?')) {
+      await deleteTransferencia(id);
+      fetchTransferencias();
     }
   };
 
@@ -77,7 +77,7 @@ export const TransaccionModalButton = () => {
     clearError();
     clearMessage();
     setOpen(false);
-    fetchTransacciones();
+    fetchTransferencias();
   };
 
   const formatDateTime = (dateString: string) => {
@@ -91,14 +91,14 @@ export const TransaccionModalButton = () => {
     });
   };
 
-  const getCategoryName = (categoryId: number) => {
-    const category = categorias.find(c => c.id === categoryId);
-    return category ? category.nombre : 'Desconocida';
+  const getCuentaName = (cuentaId: number) => {
+    const cuenta = cuentas.find(c => c.id === cuentaId);
+    return cuenta ? cuenta.nombre : 'Desconocida';
   };
 
   return (
     <Box sx={{ marginTop: 4 }}>
-      {/* Botón de agregar nueva transacción */}
+      {/* Botón de agregar nueva transferencia */}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button
           variant="contained"
@@ -118,12 +118,12 @@ export const TransaccionModalButton = () => {
             minWidth: '200px'
           }}
         >
-          <Typography variant="button">Nueva Transacción</Typography>
+          <Typography variant="button">Nueva Transferencia</Typography>
         </Button>
       </Box>
 
       {/* Tabla de transacciones */}
-      {loading && !transacciones.length ? (
+      {loading && !transferencias.length ? (
         <Box display="flex" justifyContent="center" mt={4}>
           <CircularProgress />
         </Box>
@@ -138,38 +138,32 @@ export const TransaccionModalButton = () => {
               <TableRow>
                 <TableCell>Fecha y Hora</TableCell>
                 <TableCell>Descripción</TableCell>
-                <TableCell>Categoría</TableCell>
+                <TableCell>CuentaOrigen</TableCell>
+                <TableCell>CuentaDestino</TableCell>
                 <TableCell>Monto</TableCell>
-                <TableCell>Tipo</TableCell>
-                <TableCell>Nota</TableCell>
-                <TableCell>Recurrente</TableCell>
                 <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {transacciones.map((transaccion) => (
-                <TableRow key={transaccion.id}>
-                  <TableCell>{formatDateTime(transaccion.fecha)}</TableCell>
-                  <TableCell>{transaccion.descripcion}</TableCell>
-                  <TableCell>{transaccion.categoria}</TableCell>
-                  <TableCell sx={{ color: transaccion.tipo === 'I' ? 'green' : 'red' }}>
-                    {transaccion.tipo === 'I' ? '+' : '-'}${transaccion.monto.toFixed(2)}
-                  </TableCell>
-                  <TableCell>{transaccion.tipo === 'I' ? 'Ingreso' : 'Gasto'}</TableCell>
-                  <TableCell>{transaccion.nota || '-'}</TableCell>
-                  <TableCell>{transaccion.recurrente ? '✔️' : '❌'}</TableCell>
+              {transferencias.map((transferencia) => (
+                <TableRow key={transferencia.id}>
+                  <TableCell>{formatDateTime(transferencia.fecha)}</TableCell>
+                  <TableCell>{transferencia.descripcion}</TableCell>
+                  <TableCell>{transferencia.cuentaOrigen}</TableCell>
+                  <TableCell>{transferencia.cuentaDestino}</TableCell>
+                  <TableCell sx={{ color: 'green'}}>${transferencia.monto.toFixed(2)}</TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={1}>
                       <IconButton 
                         color="primary" 
-                        onClick={() => handleEdit(transaccion)}
+                        onClick={() => handleEdit(transferencia)}
                         size="small"
                       >
                         <Edit fontSize="small" />
                       </IconButton>
                       <IconButton 
                         color="error" 
-                        onClick={() => transaccion.id && handleDelete(transaccion.id)}
+                        onClick={() => transferencia.id && handleDelete(transferencia.id)}
                         size="small"
                       >
                         <Delete fontSize="small" />
@@ -183,7 +177,7 @@ export const TransaccionModalButton = () => {
         </TableContainer>
       )}
 
-      {/* Modal para agregar/editar transacciones */}
+      {/* Modal para agregar/editar transferencias */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -205,7 +199,7 @@ export const TransaccionModalButton = () => {
             paddingRight={fullScreen ? 0 : 2}
           >
             <Typography variant="h6" fontWeight="bold">
-              {currentTransaccion ? 'Editar Transacción' : 'Nueva Transacción'}
+              {currentTransferencia ? 'Editar Transferencia' : 'Nueva Transferencia'}
             </Typography>
             <IconButton 
               edge="end" 
@@ -236,8 +230,8 @@ export const TransaccionModalButton = () => {
             overflowY: 'auto',
             paddingRight: '4px'
           }}>
-            <TransaccionForm 
-              initialData={currentTransaccion || undefined}
+            <TransferenciaForm 
+              initialData={currentTransferencia || undefined}
               onSuccess={handleSuccess}
               onCancel={handleClose}
               isModal={true}

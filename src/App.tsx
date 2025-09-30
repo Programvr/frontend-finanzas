@@ -17,6 +17,14 @@ import { TransaccionProvider } from './components/transaccion/TransaccionContext
 import { TransaccionPage } from './pages/transaccion/TransaccionPage';
 import { InformePage } from './pages/informe/InformePage';
 import { InformeProvider } from './components/informe/InformeContext';
+import { PresupuestoProvider } from './components/presupuesto/PresupuestoContext';
+import { PresupuestoPage } from './pages/presupuesto/PresupuestoPage';
+import { CuentaProvider } from './components/cuenta/CuentaContext';
+import { CuentaPage } from './pages/cuenta/CuentaPage';
+import { TransferenciaPage } from './pages/transferencia/TransferenciaPage';
+import { TransferenciaProvider } from './components/transferencia/TransferenciaContext';
+import { ObjetivoAhorroProvider } from './components/objetivoAhorro/ObjetivoAhorroContext';
+import { ObjetivoAhorroPage } from './pages/objetivoAhorro/ObjetivoAhorroPage';
 
 
 function App() {
@@ -61,10 +69,30 @@ function App() {
                 <TransaccionPage />
               </TransaccionProvider>} />
 
+            <Route path="/transferencias" element={
+              <TransferenciaProvider>{}
+                <TransferenciaPage />
+              </TransferenciaProvider>} />
+            
+            <Route path="/objetivosAhorro" element={
+              <ObjetivoAhorroProvider>{}
+                <ObjetivoAhorroPage />
+              </ObjetivoAhorroProvider>} />
+
+            <Route path="/cuentas" element={
+              <CuentaProvider>{}
+                <CuentaPage />
+              </CuentaProvider>} />
+
             <Route path="/informes" element={
               <InformeProvider>{}
                 <InformePage />
               </InformeProvider>} />
+              
+            <Route path="/presupuestos" element={
+              <PresupuestoProvider>{}
+                <PresupuestoPage />
+              </PresupuestoProvider>} />
             
             </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />

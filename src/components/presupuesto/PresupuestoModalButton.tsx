@@ -21,35 +21,35 @@ import {
   CircularProgress
 } from '@mui/material';
 import { Add, Close, Edit, Delete } from '@mui/icons-material';
-import { TransaccionForm } from './TransaccionForm';
-import { useTransacciones } from './TransaccionContext';
-import { Transaccion } from '../../services/transaccion/transaccionService';
+import { PresupuestoForm } from './PresupuestoForm';
+import { usePresupuestos } from './PresupuestoContext';
+import { Presupuesto } from '../../services/presupuesto/presupuestoService';
 
-export const TransaccionModalButton = () => {
+export const PresupuestoModalButton = () => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const {
-    transacciones,
+    presupuestos,
     loading,
     error,
-    fetchTransacciones,
-    deleteTransaccion,
+    fetchPresupuestos,
+    deletePresupuesto,
     categorias,
     clearError,
     clearMessage
-  } = useTransacciones();
+  } = usePresupuestos();
 
-  const [currentTransaccion, setCurrentTransaccion] = useState<Transaccion | null>(null);
+  const [currentPresupuesto, setCurrentPresupuesto] = useState<Presupuesto | null>(null);
 
   useEffect(() => {
-    fetchTransacciones();
-  }, [fetchTransacciones]);
+    fetchPresupuestos();
+  }, [fetchPresupuestos]);
 
   const handleOpen = () => {
     clearError();
     clearMessage();
-    setCurrentTransaccion(null);
+    setCurrentPresupuesto(null);
     setOpen(true);
   };
 
@@ -61,15 +61,15 @@ export const TransaccionModalButton = () => {
     }
   };
 
-  const handleEdit = (transaccion: Transaccion) => {
-    setCurrentTransaccion(transaccion);
+  const handleEdit = (presupuesto: Presupuesto) => {
+    setCurrentPresupuesto(presupuesto);
     setOpen(true);
   };
 
   const handleDelete = async (id: number) => {
-    if (window.confirm('¿Estás seguro de eliminar esta transacción?')) {
-      await deleteTransaccion(id);
-      fetchTransacciones();
+    if (window.confirm('¿Estás seguro de eliminar este presupuesto?')) {
+      await deletePresupuesto(id);
+      fetchPresupuestos();
     }
   };
 
@@ -77,7 +77,7 @@ export const TransaccionModalButton = () => {
     clearError();
     clearMessage();
     setOpen(false);
-    fetchTransacciones();
+    fetchPresupuestos();
   };
 
   const formatDateTime = (dateString: string) => {
@@ -98,7 +98,7 @@ export const TransaccionModalButton = () => {
 
   return (
     <Box sx={{ marginTop: 4 }}>
-      {/* Botón de agregar nueva transacción */}
+      {/* Botón de agregar nueva presupuesto */}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
         <Button
           variant="contained"
@@ -111,19 +111,19 @@ export const TransaccionModalButton = () => {
               backgroundColor: '#388E3C',
               boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)'
             },
-            textTransform: 'none',
+            textPresuform: 'none',
             fontWeight: 'bold',
             borderRadius: '8px',
             padding: '8px 16px',
             minWidth: '200px'
           }}
         >
-          <Typography variant="button">Nueva Transacción</Typography>
+          <Typography variant="button">Nuevo Presupuesto</Typography>
         </Button>
       </Box>
 
-      {/* Tabla de transacciones */}
-      {loading && !transacciones.length ? (
+      {/* Tabla de presupuestos */}
+      {loading && !presupuestos.length ? (
         <Box display="flex" justifyContent="center" mt={4}>
           <CircularProgress />
         </Box>
@@ -136,40 +136,34 @@ export const TransaccionModalButton = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Fecha y Hora</TableCell>
-                <TableCell>Descripción</TableCell>
+                <TableCell>Periodo</TableCell>
                 <TableCell>Categoría</TableCell>
                 <TableCell>Monto</TableCell>
                 <TableCell>Tipo</TableCell>
-                <TableCell>Nota</TableCell>
-                <TableCell>Recurrente</TableCell>
                 <TableCell>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {transacciones.map((transaccion) => (
-                <TableRow key={transaccion.id}>
-                  <TableCell>{formatDateTime(transaccion.fecha)}</TableCell>
-                  <TableCell>{transaccion.descripcion}</TableCell>
-                  <TableCell>{transaccion.categoria}</TableCell>
-                  <TableCell sx={{ color: transaccion.tipo === 'I' ? 'green' : 'red' }}>
-                    {transaccion.tipo === 'I' ? '+' : '-'}${transaccion.monto.toFixed(2)}
+              {presupuestos.map((presupuesto) => (
+                <TableRow key={presupuesto.id}>
+                  <TableCell>{presupuesto.periodo}</TableCell>
+                  <TableCell>{presupuesto.categoria}</TableCell>
+                  <TableCell sx={{ color: presupuesto.tipo === 'I' ? 'green' : 'red' }}>
+                    {presupuesto.tipo === 'I' ? '+' : '-'}${presupuesto.monto.toFixed(2)}
                   </TableCell>
-                  <TableCell>{transaccion.tipo === 'I' ? 'Ingreso' : 'Gasto'}</TableCell>
-                  <TableCell>{transaccion.nota || '-'}</TableCell>
-                  <TableCell>{transaccion.recurrente ? '✔️' : '❌'}</TableCell>
+                  <TableCell>{presupuesto.tipo === 'I' ? 'Ingreso' : 'Gasto'}</TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={1}>
                       <IconButton 
                         color="primary" 
-                        onClick={() => handleEdit(transaccion)}
+                        onClick={() => handleEdit(presupuesto)}
                         size="small"
                       >
                         <Edit fontSize="small" />
                       </IconButton>
                       <IconButton 
                         color="error" 
-                        onClick={() => transaccion.id && handleDelete(transaccion.id)}
+                        onClick={() => presupuesto.id && handleDelete(presupuesto.id)}
                         size="small"
                       >
                         <Delete fontSize="small" />
@@ -183,7 +177,7 @@ export const TransaccionModalButton = () => {
         </TableContainer>
       )}
 
-      {/* Modal para agregar/editar transacciones */}
+      {/* Modal para agregar/editar presupuestos */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -205,7 +199,7 @@ export const TransaccionModalButton = () => {
             paddingRight={fullScreen ? 0 : 2}
           >
             <Typography variant="h6" fontWeight="bold">
-              {currentTransaccion ? 'Editar Transacción' : 'Nueva Transacción'}
+              {currentPresupuesto ? 'Editar Presupuesto' : 'Nuevo Presupuesto'}
             </Typography>
             <IconButton 
               edge="end" 
@@ -236,8 +230,8 @@ export const TransaccionModalButton = () => {
             overflowY: 'auto',
             paddingRight: '4px'
           }}>
-            <TransaccionForm 
-              initialData={currentTransaccion || undefined}
+            <PresupuestoForm 
+              initialData={currentPresupuesto || undefined}
               onSuccess={handleSuccess}
               onCancel={handleClose}
               isModal={true}

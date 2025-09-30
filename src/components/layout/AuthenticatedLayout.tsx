@@ -3,8 +3,8 @@ import { AppBar, Toolbar, Box, Avatar, IconButton, Menu, MenuItem, Typography, B
 import { useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
 import DashboardIcon from '@mui/icons-material/Dashboard'; // Importa el ícono de Dashboard
-
-import { AdminPanelSettings, PaidOutlined } from '@mui/icons-material';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { AccountBalanceWallet, AccountBoxSharp, AdminPanelSettings, PaidOutlined, Savings, TransferWithinAStation } from '@mui/icons-material';
 import { DateRangeIcon } from '@mui/x-date-pickers';
 
 
@@ -60,6 +60,20 @@ export const AuthenticatedLayout = () => {
               Dashboard
             </Button>
             <Button
+              startIcon={<AccountBoxSharp />}
+              onClick={() => navigate('/cuentas')}
+              sx={{
+                color: 'black',
+                textTransform: 'none',
+                fontWeight: 'normal',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                }
+              }}
+            >
+              Cuentas
+            </Button>
+            <Button
               startIcon={< DateRangeIcon />}
               onClick={() => navigate('/informes')}
               sx={{
@@ -72,6 +86,35 @@ export const AuthenticatedLayout = () => {
               }}
             >
               Informes
+            </Button>
+
+            <Button
+              startIcon={< AccountBalanceWallet />}
+              onClick={() => navigate('/presupuestos')}
+              sx={{
+                color: 'black',
+                textTransform: 'none',
+                fontWeight: 'normal',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                }
+              }}
+            >
+              Presupuestos
+            </Button>
+            <Button
+              startIcon={< Savings />}
+              onClick={() => navigate('/objetivosAhorro')}
+              sx={{
+                color: 'black',
+                textTransform: 'none',
+                fontWeight: 'normal',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                }
+              }}
+            >
+              Objetivos De Ahorro
             </Button>
             <Button
 
@@ -87,6 +130,21 @@ export const AuthenticatedLayout = () => {
               }}
             >
               Transacciones
+            </Button>
+            <Button
+
+              startIcon={<TransferWithinAStation />}
+              onClick={() => navigate('/transferencias')}
+              sx={{
+                color: 'black',
+                textTransform: 'none',
+                fontWeight: 'normal',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                }
+              }}
+            >
+              Transferencias
             </Button>
             <Button
 
